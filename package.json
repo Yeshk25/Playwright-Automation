@@ -10,6 +10,7 @@
     "test:webkit": "node scripts/run-tests.js --project=webkit",
     "test:profile": "node scripts/run-tests.js tests/Profile_icon.spec.js",
     "test:securebank": "node scripts/run-tests.js tests/SecureBank_Notification.spec.js",
+    "open:excel-results": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/open-excel-results.ps1",
     "clean:allure": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/clean-allure-results.ps1",
     "test:allure": "node scripts/run-allure.js",
     "test:allure:firefox": "node scripts/run-allure.js --project=firefox",

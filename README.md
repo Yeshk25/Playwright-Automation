@@ -33,6 +33,11 @@ JavaScript, how the runner works, and how to read the Allure report.
 - `utilities/test-case-results.xlsx` is refreshed automatically after a test
   run with each case's status, browser, duration, retry, and failure message.
 
+To open the workbook in the computer's default Excel application from VS Code,
+run **Terminal > Run Task > Open Excel test results**. You can also use
+`npm run open:excel-results`. Opening the workbook by clicking it in the VS Code
+Explorer still opens it in VS Code's editor.
+
 ## Allure in VS Code
 
 This workspace recommends the official Allure VS Code extension
