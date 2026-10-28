@@ -1,4 +1,4 @@
-# Playwright SecureBank tests
+# Playwright Automation Framework
 
 For a beginner, start with [FRAMEWORK-GUIDE.md](./FRAMEWORK-GUIDE.md). It
 explains the two SecureBank programs, every source and output folder, basic
