@@ -1,0 +1,316 @@
+/*
+
+//importing 'testannotations the test module from Playwright
+const {test} = require('@playwright/test');
+
+//test launches the browser and opens a new page
+
+//test anotation passing 2 arguments, the first is the name of the test and the second is an async function that contains the test code
+//playwright is a async framework so we need to use async function to write the test code
+//so always use async function to write the test code " await page.goto('https://www.google.com') " this is the example of async function
+//when you are using async function you need to use await keyword before the function call to wait for the function to complete before moving to the next line of code
+
+// we can call it function as a anonymous function or we can call it as a named function
+// for this new version of javascript we can use arrow function to write the test code
+//instead of using function keyword we can use arrow function (fat operator) to write the test code
+// fixture are nothing but playwright provides some pre-defined objects to use in the test code like page, browser, context etc
+test('demo test', async ({ browser }) => {
+
+
+    // playwiright.config.js file is used to configure the playwright test runner and we can use it to set the base url, test directory, test timeout, test retries, test reporter etc
+    // we can use the browser object to launch the browser and create a new page in the browser context
+    // we can use the page object to navigate to different urls and interact with the web page  
+
+    //here we can mention what test we want to run and what test we want to skip and what test we want to run in parallel and what test we want to run in serial
+    //testDir is used to specify the directory where the test files are located and we can use it to run the test files in that directory
+    
+    // in the plawright defeault wait time is 30 seconds but we can change it to any time we want to wait for the element to be visible or clickable or present in the dom
+    // if you want to change the default wait time for the element to be visible or clickable or present in the dom then we can use the setDefaultTimeout() method to set the default wait time for the element to be visible or clickable or present in the dom
+    // there 2 timeouts in playwright one is for the page load and the other is for the element to be visible or clickable or present in the dom
+
+    // we can't run from tests folder because we have to run the test from the root folder where the playwright.config.js file is located because the playwright.config.js file is used to configure the playwright test runner and we can use it to set the base url, test directory, test timeout, test retries, test reporter etc
+    // must be run from playwright.config.js file because it is used to configure the playwright test runner and we can use it to set the base url, test directory, test timeout, test retries, test reporter etc
+
+    
+
+
+*/
+
+# Playwright Framework Notes: Beginner Guide
+
+This guide explains the small Playwright framework in this project, the two main
+banking scenarios, and what each important file and folder does.
+
+## 1. What is a test automation framework?
+
+A test automation framework is a set of tools and organized code that lets a
+computer repeat user actions and check the results. In this project, Playwright
+opens a browser, visits the demo banking site, clicks and fills controls, and
+checks that expected messages appear.
+
+The two main scenarios are:
+
+1. Update the profile first name.
+2. Check notifications, mark them as read, and log out.
+
+## 2. Project structure
+
+```text
+D:\PlayWrightAutomation - Copy\
+├── pages\                  Page objects: page elements and reusable actions
+├── tests\                  Test scenarios
+├── scripts\                Test setup and Allure commands
+├── helpers\                Shared screenshot helper
+├── reporters\              Custom test logging
+├── .github\workflows\      GitHub Actions automation
+├── screenshots\            Screenshots captured during the scenarios
+├── execution-logs\         Timestamped Playwright and Allure logs
+├── allure-results\         Raw test results read by Allure
+├── allure-report\          Saved Allure HTML report
+├── playwright-report\      Playwright HTML report
+├── test-results\           Playwright attachments and failure artifacts
+├── node_modules\            Installed JavaScript packages
+├── package.json             Dependencies and runnable commands
+├── package-lock.json        Exact dependency versions for repeatable installs
+├── playwright.config.js     Shared Playwright configuration
+├── README.md                Short project and run instructions
+└── .gitignore               Generated files excluded from source control
+```
+
+Folders such as screenshots, reports, logs, and test-results are generated as
+the tests run. They are output, not the main source code. `node_modules/` is
+created by installing dependencies; do not edit its contents.
+
+## 3. Essential terms
+
+- **Browser:** The application that opens the website, such as Chromium.
+- **Page:** One browser tab controlled by Playwright.
+- **Test/spec:** A script that describes a user scenario and verifies outcomes.
+- **Locator:** A reusable way to find a web element, such as a button or input.
+- **Assertion:** A check that passes or fails based on what the page shows.
+- **Fixture:** An object Playwright provides to a test. The `page` fixture is a
+  ready-to-use browser tab.
+- **Page Object Model (POM):** A pattern where page selectors and actions are
+  kept in page classes, separate from the scenario steps.
+- **Reporter:** A component that records test results, for example in the
+  terminal, a log file, or an Allure report.
+
+## 4. How a test runs
+
+```text
+Run command
+   ↓
+Playwright reads playwright.config.js
+   ↓
+global-setup.js clears previous Allure output
+   ↓
+The test spec runs and calls page objects
+   ↓
+Playwright controls the browser and checks assertions
+   ↓
+Screenshots, test results, and logs are saved
+   ↓
+Allure converts raw results into a report
+```
+
+Most browser operations are asynchronous: the browser needs time to respond.
+JavaScript uses `async` on a function that performs asynchronous work and
+`await` to wait for each operation to finish before continuing.
+
+## 5. The two main test files
+
+### `tests/Profile_icon.spec.js`
+
+This is the Profile scenario. It creates the login and profile page objects,
+then:
+
+1. Opens the bank login page.
+2. Signs in.
+3. Opens the Profile page.
+4. Edits the first name to `Alex3` and saves.
+5. Checks for the success message and updated first name.
+6. Captures screenshots of important states.
+
+The test file describes **what the user does and what should be true**.
+
+### `tests/SecureBank_Notification.spec.js`
+
+This is the SecureBank notification scenario. It creates the login and
+notifications page objects, then:
+
+1. Signs in and checks the dashboard welcome message.
+2. Opens Notifications.
+3. Compares the unread count on the page with the number of unread notification
+   elements.
+4. Marks all notifications as read.
+5. Checks that “All caught up” is visible and no unread count remains.
+6. Logs out and checks that Sign In is visible.
+7. Captures screenshots of important states.
+
+The count comparison helps ensure the number shown to the user matches the
+actual unread notification controls on the page.
+
+## 6. Page Object Model files
+
+A page object groups selectors and actions that belong to one page. This keeps
+the scenario readable and avoids repeating selectors in multiple specs.
+
+### `pages/BankLoginPage.js`
+
+This page object contains the username field, password field, sign-in button,
+and welcome message locator. Its `open()` method navigates to the login page;
+`signIn()` fills the credentials and submits the form.
+
+The demo defaults in `signIn()` are username `standard_user` and password
+`bank_sauce`. The test specs call `signIn()` without arguments, so those defaults
+are used.
+
+### `pages/ProfilePage.js`
+
+This page object contains the Edit button, First Name field, Save Changes button,
+and profile success message. It has `open()` and `updateFirstName()` methods.
+The Profile spec currently uses the page object's controls directly for the
+edit/fill/save steps.
+
+### `pages/NotificationsPage.js`
+
+This page object contains locators for the Notifications title, unread count,
+unread notification items, Mark all read, logout, and Sign In controls. Its
+methods open the notification page, mark notifications as read, and log out.
+
+There is no shared `BasePage.js` in this project. Each page object receives the
+Playwright `page` and defines its own selectors and actions.
+
+### `helpers/captureEvidence.js`
+
+Both scenario specs use this shared screenshot helper. It saves the screenshot
+to the correct scenario folder, attaches it to the Allure test, and temporarily
+adds a small local date/time label at the bottom-right of the image. The label
+is removed from the live page immediately after the screenshot is captured.
+
+## 7. Configuration and support files
+
+### `playwright.config.js`
+
+This is the central Playwright configuration. It sets the tests directory,
+global setup, timeouts, retries in CI, Chromium, the base URL, and reporters.
+The base URL defaults to `https://qaplayground.com`; `BASE_URL` can override it.
+It also requests screenshots and traces when a test fails.
+
+### `package.json`
+
+This file lists the project's JavaScript dependencies and short commands called
+npm scripts. Important packages include `@playwright/test`,
+`allure-playwright`, and `allure`.
+
+Useful commands:
+
+```powershell
+npm run test:allure    # Run both scenarios and generate the Allure report
+npm run open:allure    # Serve/open a report from current Allure results
+npm run report:allure  # Generate the saved HTML report
+npm run test:securebank # Run the SecureBank notification spec
+npm run clean:allure   # Manually clear raw Allure result files
+```
+
+### `package-lock.json`
+
+This records the exact dependency versions installed. `npm ci` uses it for a
+consistent dependency installation.
+
+### `scripts/global-setup.js`
+
+Playwright runs this before tests. It removes previous `allure-results/` and
+`allure-report/` output so a regular test run does not combine with old Allure
+data. The combined runner uses an environment flag to preserve results while it
+runs its two specs separately.
+
+### `scripts/run-allure.js`
+
+This runner clears previous Allure output once, runs the Profile spec headed and
+the SecureBank spec normally, then generates a report. It preserves results
+between its two Playwright commands so both scenarios appear in the same report.
+
+### `scripts/generate-allure-report.js`
+
+This checks that raw test results exist, removes the old saved HTML report,
+generates a new one, verifies it contains tests, and writes a report-generation
+log.
+
+### `scripts/open-allure-report.js`
+
+This checks that raw results exist, then starts the Allure server using those
+results. It avoids opening an empty or stale saved report folder.
+
+### `scripts/clean-allure-results.ps1`
+
+This PowerShell script manually removes the contents of `allure-results/`. It
+is available through `npm run clean:allure`. Normal Playwright runs already
+clean prior Allure output automatically.
+
+### `reporters/execution-log-reporter.js`
+
+This custom Playwright reporter writes test start/end, status, duration,
+standard output, and errors to a timestamped `.log` file in `execution-logs/`.
+Allure generation creates its own `allure-report-*.log` file there.
+
+### `.github/workflows/playwright.yml`
+
+This GitHub Actions workflow runs when code is pushed or a pull request targets
+the main/master branches. It installs Node packages and Playwright browsers,
+runs Playwright tests, and uploads the Playwright HTML report as an artifact.
+
+### `README.md`
+
+The short project instructions: install dependencies, run tests, and open
+reports. This longer guide is the framework learning note.
+
+### `.gitignore`
+
+This tells Git not to include installed packages, screenshots, temporary test
+output, logs, and generated reports when saving source changes.
+
+## 8. Output folders
+
+- `screenshots/` — full-page screenshots captured during the two scenarios.
+  Each has a small local capture date/time label at the bottom-right and is also
+  attached to its Allure result.
+- `execution-logs/` — timestamped Playwright execution logs and Allure
+  generation logs.
+- `allure-results/` — raw JSON and attachment files written by the Allure
+  Playwright reporter. This is input data, not the human-friendly report.
+- `allure-report/` — saved Allure HTML output generated from raw results.
+- `playwright-report/` — Playwright's own HTML report, separate from Allure.
+- `test-results/` — Playwright output such as failure screenshots, traces, and
+  error context.
+
+Generated folders may be cleared or regenerated by test commands, so don’t
+treat them as source code.
+
+## 9. Other files in `tests/`
+
+- `tests/Profile_icon.js` is an older direct-selector Profile example. The main
+  POM scenario is `Profile_icon.spec.js`.
+- `tests/Demo.js` is a learning example about browser/page fixtures. It is not
+  one of the two requested scenarios.
+- `tests/example.spec.js` is the standard Playwright sample that visits
+  playwright.dev. It is not one of the two banking scenarios.
+- `tests/playwright_notes` contains these framework notes plus older commented
+  learning notes.
+
+The combined `npm run test:allure` script explicitly selects the two banking
+specs. A general `npx playwright test` can also discover other matching
+`*.spec.js` files, such as `example.spec.js`.
+
+## 10. Run the two scenarios and open the report
+
+From PowerShell in the project folder:
+
+```powershell
+npm run test:allure
+npm run open:allure
+```
+
+The Profile scenario runs with the browser visible (`--headed`). The SecureBank
+scenario runs normally. The combined command makes one fresh report containing
+both test results.

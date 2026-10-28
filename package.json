@@ -1,0 +1,34 @@
+{
+  "name": "playwrightautomation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node scripts/run-tests.js",
+    "test:chromium": "node scripts/run-tests.js --project=chromium",
+    "test:firefox": "node scripts/run-tests.js --project=firefox",
+    "test:webkit": "node scripts/run-tests.js --project=webkit",
+    "test:profile": "node scripts/run-tests.js tests/Profile_icon.spec.js",
+    "test:securebank": "node scripts/run-tests.js tests/SecureBank_Notification.spec.js",
+    "clean:allure": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/clean-allure-results.ps1",
+    "test:allure": "node scripts/run-allure.js",
+    "test:allure:firefox": "node scripts/run-allure.js --project=firefox",
+    "test:allure:webkit": "node scripts/run-allure.js --project=webkit",
+    "test:allure:all-browsers": "node scripts/run-allure.js --project=chromium --project=firefox --project=webkit",
+    "report": "playwright show-report",
+    "report:allure": "node scripts/generate-allure-report.js",
+    "open:allure": "node scripts/open-allure-report.js",
+    "serve:allure": "node scripts/open-allure-report.js --no-generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.5",
+    "allure": "^3.20.1",
+    "allure-playwright": "^3.13.0",
+    "exceljs": "^4.4.0"
+  }
+}

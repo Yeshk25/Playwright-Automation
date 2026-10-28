@@ -1,0 +1,12 @@
+{
+  "baseURL": "https://qaplayground.com",
+  "expected": {
+    "welcomeMessage": "Welcome back, Alex",
+    "notificationsTitle": "Notifications",
+    "profileUpdatedMessage": "Profile updated successfully.",
+    "allCaughtUpMessage": "All caught up"
+  },
+  "profile": {
+    "updatedFirstName": "Alex3"
+  }
+}
